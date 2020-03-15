@@ -1,0 +1,36 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.19.2",
+    "firebase": "^7.9.1",
+    "iohook": "^0.4.0",
+    "leaflet": "^1.4.0",
+    "leaflet-offline": "^1.1.0",
+    "mouse-hooks": "^0.2.0",
+    "ol": "^5.3.1",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-form-elements": "^4.14.0",
+    "react-hook-mouse": "^1.0.0",
+    "react-hyper-modal": "^1.2.1",
+    "react-popout-component": "^1.8.5",
+    "react-scripts": "2.1.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
