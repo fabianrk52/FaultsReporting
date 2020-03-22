@@ -66,3 +66,28 @@ label {
 .padding {
     margin-top: 5%;
 }
+
+.Overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 999;
+}
+
+.Modal {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    bottom: 10%;
+    background-color: #fff;
+    box-shadow: 0 0 10px 0 rgba(0,0,97,0.5);
+    overflow: auto;
+    border-radius: 4px;
+    outline: none;
+    /* max-width: 80%;
+    max-height: 80%; */
+}
