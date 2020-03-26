@@ -7,6 +7,10 @@ import HyperModal from 'react-hyper-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import Modal from 'react-modal'
+import axios from 'axios'
+
+const server_ip = "http://127.0.0.1"
+const server_port = "4000"
 
 const dict = {
     1: "כן",
@@ -18,18 +22,19 @@ export default function MainPage() {
     const [visibleFirst, setVisibleFirst] = useState(false);
     const [visibleSecond, setVisibleSecond] = useState(false);
     const [errorId, setErrorId] = useState(null);
-    const [details, setDetails] = useState({
-        description: '',
-        fault_date: new Date(), 
-        location: '', 
-        platform: 0, 
-        platform_num: 0,  
-        report_date: new Date(), 
-        reporter_username: '', 
-        sub_platform: 0, 
-        system: 0, 
-        summary: ''
-    })
+    const emptyDetails = {
+        report_description: '',
+        report_fault_date: new Date(), 
+        report_location: '', 
+        report_platform: 0, 
+        report_platform_num: 0,  
+        report_reporting_date: new Date(), 
+        report_reporter_username: '', 
+        report_sub_platform: 0, 
+        report_system: 0, 
+        report_summary: ''
+    }
+    const [details, setDetails] = useState(emptyDetails)
     const [investigateDetails, setInvestigateDetails] = useState({
         errorId: '',
         investigator: '',
@@ -99,17 +104,25 @@ export default function MainPage() {
 
     function renderTableData() {
         return tableData.map((report, index) => {
-            const { id, summary, report_date, priority, reporter_username, platform, status} = report //destructuring
+            const { 
+                _id, 
+                report_summary, 
+                report_reporting_date, 
+                report_priority, 
+                report_reporter_username, 
+                report_platform, 
+                report_status
+            } = report //destructuring
             return (
                 <tr onDoubleClick={() => setSelectedError(report)}>
-                    <td>{id}</td>
-                    <td>{summary}</td>
-                    <td>{new Date(report_date.seconds * 1000).toLocaleDateString("he-IL", "short") || "-"}</td>
-                    <td>{priority || "טרם הוגדר"}</td>
+                    <td>{_id}</td>
+                    <td>{report_summary}</td>
+                    <td>{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
+                    <td>{report_priority || "טרם הוגדר"}</td>
                     <td>{"-"}</td>
-                    <td>{reporter_username}</td>
-                    <td>{platform}</td>
-                    <td>{status || "טרם עודכן"}</td>
+                    <td>{report_reporter_username}</td>
+                    <td>{report_platform}</td>
+                    <td>{report_status || "טרם עודכן"}</td>
                 </tr>
             )
         })
@@ -142,36 +155,54 @@ export default function MainPage() {
         styleFinal.display = "inline"
     }
 
-    const finishInvesigate = () => {
-        if (!validateInvesigateForm()) {
-            fire.firestore().collection("investigations").add({ ...investigateDetails, errorId: errorId })
-            goToTable()
-        }
-        else alert('חסרים ערכים בחקירת התקלה')
-    }
+    // const finishInvesigate = () => {
+    //     if (!validateInvesigateForm()) {
+    //         fire.firestore().collection("investigations").add({ ...investigateDetails, errorId: errorId })
+    //         goToTable()
+    //     }
+    //     else alert('חסרים ערכים בחקירת התקלה')
+    // }
 
     const newReport = () => {
         if (!validateForm()) {
             const newDetails = {...details};
-            newDetails.report_date = new Date();
+            newDetails.report_reporting_date = new Date();
             newDetails.reporter_username = 'current';
-            setDetails(newDetails);
-            fire.firestore().collection("reports2").add(newDetails);
+            //fire.firestore().collection("reports2").add(newDetails);
+            axios
+                .post(`${server_ip}:${server_port}/reports/add`, newDetails)
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
+            setDetails(emptyDetails);
             closeNewReportModal();
         }
         else alert('חסרים ערכים בדו"ח התקלה')
     }
 
-    const getReports = async () => {
-        const data = await fire.firestore().collection("reports").get()
-        const reports = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setTableData(reports)
-    }
+    // const getReports = async () => {
+    //     const data = await fire.firestore().collection("reports").get()
+    //     const reports = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    //     setTableData(reports)
+    // }
 
-    const getReports2 = async () => {
-        const data = await fire.firestore().collection("reports2").get()
-        const reports = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setTableData(reports)
+    // const getReports2 = async () => {
+    //     const data = await fire.firestore().collection("reports2").get()
+    //     const reports = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    //     setTableData(reports)
+    // }
+
+    const getReports2 = () => {
+        const getReports_IP = `${server_ip}:${server_port}/reports/`
+        axios
+        .get(getReports_IP, {
+            timeout: 5000
+        })
+        .then(res => {
+            const reports = res.data;
+            setTableData(reports);
+            // console.log(data);
+        })
+        .catch(err => console.error(err));
     }
 
     const getSystems = async () => {
@@ -234,21 +265,21 @@ export default function MainPage() {
                             <label className="form-label">תקציר התקלה</label>
                             <input value={details.topic} 
                                 onChange={
-                                    ({ target: { value } }) => setDetails(details => ({ ...details, summary: value }))
+                                    ({ target: { value } }) => setDetails(details => ({ ...details, report_summary: value }))
                                 } type="text" className="form-control" placeholder="תקציר התקלה"/>
                         </div>
                         <div className="form-group">
                         <label className="form-label">תיאור התקלה</label>
                             <textarea value={details.description} rows="3" 
                             onChange={
-                                ({ target: { value } }) => setDetails(details => ({ ...details, description: value }))
+                                ({ target: { value } }) => setDetails(details => ({ ...details, report_description: value }))
                                 } type="text" className="form-control" placeholder="תיאור התקלה (בפירוט)"/>
                         </div>
                         <div className="form-row">
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label className="form-label">פלטפורמה</label>
-                                    <select value={details.platform} onChange={({ target: { value } }) => setDetails(details => ({ ...details, platform: value }))} className="form-control">
+                                    <select value={details.platform} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_platform: value }))} className="form-control">
                                         <option value="0" selected disabled>פלטפורמה</option>
                                         {
                                             platforms.map((system, index) =>
@@ -261,7 +292,7 @@ export default function MainPage() {
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label className="form-label">מערכת</label>
-                                    <select value={details.system} onChange={({ target: { value } }) => setDetails(details => ({ ...details, system: value }))} className="form-control">
+                                    <select value={details.system} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_system: value }))} className="form-control">
                                         <option value="0" selected disabled>מערכת</option>
                                         {
                                             systems.map((system, index) =>
@@ -278,7 +309,7 @@ export default function MainPage() {
                                 <div className="form-group">
                                     <label className="form-label">תת-פלטפורמה</label>
                                     <select value={details.sub_platform} onChange={
-                                        ({ target: { value } }) => setDetails(details => ({ ...details, sub_platform: value }))
+                                        ({ target: { value } }) => setDetails(details => ({ ...details, report_sub_platform: value }))
                                     } className="form-control">
                                         <option value="0" selected disabled>תת-פלטפורמה</option>
                                         {
@@ -292,7 +323,7 @@ export default function MainPage() {
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label className="form-label">תאריך התקלה</label>
-                                    <input onChange={({ target: { value } }) => setDetails(details => ({ ...details, fault_date: value }))} type="date" className="form-control" placeholder="תאריך התקלה" />
+                                    <input onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_fault_date: value }))} type="date" className="form-control" placeholder="תאריך התקלה" />
                                 </div>
                             </div>                         
                         </div>
@@ -303,7 +334,7 @@ export default function MainPage() {
                                     <label className="form-label">מספר פלטפורמה</label>
                                     <input value={details.platform_num} 
                                     onChange=
-                                        {({ target: { value } }) => setDetails(details => ({ ...details, platform_num: value }))
+                                        {({ target: { value } }) => setDetails(details => ({ ...details, report_platform_num: value }))
                                     } type="number" className="form-control" placeholder="מספר פלטפורמה" />
                                 </div>
                             </div>
@@ -312,7 +343,7 @@ export default function MainPage() {
                                     <label className="form-label">מיקום</label>
                                     <input value={details.location} 
                                     onChange={
-                                        ({ target: { value } }) => setDetails(details => ({ ...details, location: value }))
+                                        ({ target: { value } }) => setDetails(details => ({ ...details, report_location: value }))
                                     } type="text" className="form-control" placeholder="מיקום"/>
                                 </div>
                             </div>                         
