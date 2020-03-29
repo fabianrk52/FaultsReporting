@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CheckBox, Option, DropDown, OptionGroup } from 'react-form-elements/'
-import './Table.css';
+import '../styles/Table.css';
 
 
 export default function Table() {
