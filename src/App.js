@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import './App.css';
-import firebase from './fire.js';
+import React, { Component } from "react";
+import "./App.css";
+import firebase from "./fire.js";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentItem: '',
-      username: '',
+      currentItem: "",
+      username: "",
       reports: []
-    }
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -20,7 +20,7 @@ class App extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const reportsRef = firebase.database().ref('reports');
+    const reportsRef = firebase.database().ref("reports");
     const report = {
       title: this.state.currentTitle,
       date: this.state.date,
@@ -37,20 +37,20 @@ class App extends Component {
       solvedInTheField: this.state.solvedInTheField,
       subject: this.state.subject,
       tankID: this.state.tankID
-    }
-    const user ={
-        name: this.state.name,
-        phone: this.state.phone
-    }
+    };
+    const user = {
+      name: this.state.name,
+      phone: this.state.phone
+    };
     reportsRef.push(report);
     this.setState({
-      currentreport: '',
-      username: ''
+      currentreport: "",
+      username: ""
     });
   }
   componentDidMount() {
-    const reportsRef = firebase.database().ref('reports');
-    reportsRef.on('value', (snapshot) => {
+    const reportsRef = firebase.database().ref("reports");
+    reportsRef.on("value", snapshot => {
       let reports = snapshot.val();
       let newState = [];
       for (let report in reports) {
@@ -76,36 +76,50 @@ class App extends Component {
   }
   render() {
     return (
-      <div className='app'>
+      <div className="app">
         <header>
-            <div className="wrapper">
-              <h1>Fun Food Friends</h1>
-                             
-            </div>
+          <div className="wrapper">
+            <h1>Fun Food Friends</h1>
+          </div>
         </header>
-        <div className='container'>
-          <section className='add-item'>
-                <form onSubmit={this.handleSubmit}>
-                  <input type="text" name="username" placeholder="What's your name?" onChange={this.handleChange} value={this.state.username} />
-                  <input type="text" name="currentItem" placeholder="What are you bringing?" onChange={this.handleChange} value={this.state.currentItem} />
-                  <button>Add Item</button>
-                </form>
+        <div className="container">
+          <section className="add-item">
+            <form onSubmit={this.handleSubmit}>
+              <input
+                type="text"
+                name="username"
+                placeholder="What's your name?"
+                onChange={this.handleChange}
+                value={this.state.username}
+              />
+              <input
+                type="text"
+                name="currentItem"
+                placeholder="What are you bringing?"
+                onChange={this.handleChange}
+                value={this.state.currentItem}
+              />
+              <button>Add Item</button>
+            </form>
           </section>
-          <section className='display-item'>
-              <div className="wrapper">
-                <ul>
-                  {this.state.items.map((item) => {
-                    return (
-                      <li key={item.id}>
-                        <h3>{item.title}</h3>
-                        <p>brought by: {item.user}
-                          <button onClick={() => this.removeItem(item.id)}>Remove Item</button>
-                        </p>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
+          <section className="display-item">
+            <div className="wrapper">
+              <ul>
+                {this.state.items.map(item => {
+                  return (
+                    <li key={item.id}>
+                      <h3>{item.title}</h3>
+                      <p>
+                        brought by: {item.user}
+                        <button onClick={() => this.removeItem(item.id)}>
+                          Remove Item
+                        </button>
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </section>
         </div>
       </div>
@@ -113,3 +127,4 @@ class App extends Component {
   }
 }
 export default App;
+//Hi From Me Iz 29032019
