@@ -9,6 +9,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 import Modal from 'react-modal'
 import axios from 'axios'
 import ServerConnection from '../utils/ServerConnection'
+import ViewEditReportModal from './ViewEditReport'
 
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
@@ -52,6 +53,7 @@ export default function MainPage() {
     const [selectedFault, setSelectedFault] = useState(null);
     const [investigations, setInvestigations] = useState([]);
     const [isNewReportModalOpen, setIsNewReportModalOpen] = useState(false);
+    const [isViewEditReportModalOpen, setIsViewEditReportModalOpen] = useState(false);
 
     const validateForm = () => {
         const { description, fault_date, location, platform, platform_num, sub_platform, system, summary} = details
@@ -107,6 +109,20 @@ export default function MainPage() {
         setIsNewReportModalOpen(false);
     }
 
+    function openViewEditReportModal() {
+        setIsViewEditReportModalOpen(true);
+    }
+
+    function closeViewEditReportModal() {
+        goToTable()
+        setIsViewEditReportModalOpen(false);
+    }
+
+    function onSelectReportOnTable(report) {
+        setSelectedFault(report);
+        openViewEditReportModal();
+    }
+
     function renderTableData() {
         return tableData.map((report, index) => {
             const { 
@@ -120,7 +136,7 @@ export default function MainPage() {
             } = report //destructuring
             return (
                 <tr>
-                    <td><span className="HyperlinkText">{_id}</span></td>
+                    <td><span className="HyperlinkText" onClick={() => onSelectReportOnTable(report)}>{_id}</span></td>
                     <td>{report_summary}</td>
                     <td>{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
                     <td>{report_priority || "טרם הוגדר"}</td>
@@ -393,7 +409,10 @@ export default function MainPage() {
                     <button onClick={finishInvesigate} type="button" className="btn btn-outline-success">סיים תחקור</button>
                 </form> */}
             </Modal>
-                
+            
+            <ViewEditReportModal reportDetails={selectedFault} isViewEditReportModalOpen={isViewEditReportModalOpen} 
+            closeViewEditReportModal={closeViewEditReportModal} platforms={platforms} subPlatforms={subPlatforms} systems={systems}/>
+
             <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
