@@ -120,7 +120,7 @@ export default function MainPage() {
             } = report //destructuring
             return (
                 <tr>
-                    <td><span className="HyperlinkText" onClick={() => onSelectReportOnTable(report)}>{_id}</span></td>
+                    <td><span className="HyperlinkText">{_id}</span></td>
                     <td>{report_summary}</td>
                     <td>{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
                     <td>{report_priority || "טרם הוגדר"}</td>
