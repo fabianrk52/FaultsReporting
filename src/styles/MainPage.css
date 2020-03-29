@@ -4,9 +4,9 @@ html, body, #root {
     direction: rtl;
 }
 
-.form-wrapper {
+/* .form-wrapper {
     width: 50%;
-}
+} */
 
 .headline{
     display: flex;
@@ -91,3 +91,15 @@ label {
     /* max-width: 80%;
     max-height: 80%; */
 }
+
+.HyperlinkText {
+    cursor:pointer;
+    color:blue;
+    text-decoration:underline;
+}
+
+.HyperlinkText:hover {
+    text-decoration:none;
+    text-shadow: 1px 1px 1px #555;
+}
+
