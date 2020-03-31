@@ -91,10 +91,6 @@ export default function MainPage() {
     }
 
     function goToTable() {
-        serverConnection.getReports(res => {
-            const reports = res.data;
-            setTableData(reports);
-        })
         setVisibleTable(true)
         setVisibleFirst(false)
         setVisibleSecond(false)
@@ -105,8 +101,10 @@ export default function MainPage() {
     }
 
     function closeNewReportModal() {
-        goToTable()
-        setIsNewReportModalOpen(false);
+        getReportsFromServer(() => {
+            goToTable();
+            setIsNewReportModalOpen(false);
+        }); 
     }
 
     function openViewEditReportModal() {
@@ -114,8 +112,10 @@ export default function MainPage() {
     }
 
     function closeViewEditReportModal() {
-        goToTable()
-        setIsViewEditReportModalOpen(false);
+        getReportsFromServer(() => {
+            goToTable();
+            setIsViewEditReportModalOpen(false);
+        }); 
     }
 
     function onSelectReportOnTable(report) {
@@ -186,6 +186,7 @@ export default function MainPage() {
 
     const newReport = () => {
         if (!validateForm()) {
+            console.log(details);
             const newDetails = {...details};
             newDetails.report_reporting_date = new Date();
             newDetails.reporter_username = 'current';
@@ -198,6 +199,16 @@ export default function MainPage() {
             closeNewReportModal();
         }
         else alert('חסרים ערכים בדו"ח התקלה')
+    }
+
+    const getReportsFromServer = (callback = null) => {
+        serverConnection.getReports(res => {
+            const reports = res.data;
+            setTableData(reports);
+            if (callback) {
+                callback();
+            }
+        })
     }
 
     const getSystems = async () => {
@@ -231,16 +242,13 @@ export default function MainPage() {
     }
 
     useEffect(() => {
-        serverConnection.getReports(res => {
-            const reports = res.data;
-            setTableData(reports);
-        })
-        getSystems()
-        getPlatforms()
-        getSubPlatforms()
-        getInvestigations()
-        getUsers()
-    }, [])
+        getReportsFromServer();
+        getSystems();
+        getPlatforms();
+        getSubPlatforms();
+        getInvestigations();
+        getUsers();
+    }, []);
 
     return (
         <div id="main-page">
@@ -411,11 +419,11 @@ export default function MainPage() {
             </Modal>
             
             <ViewEditReportModal reportDetails={selectedFault} isViewEditReportModalOpen={isViewEditReportModalOpen} 
-            closeViewEditReportModal={closeViewEditReportModal} platforms={platforms} subPlatforms={subPlatforms} systems={systems}/>
+            closeViewEditReportModal={closeViewEditReportModal} platforms={platforms} subPlatforms={subPlatforms} systems={systems} serverConnection={serverConnection}/>
 
             <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={faBars}/>
                 </button>
                 <a className="navbar-brand">Curernt User</a>
             </nav>
