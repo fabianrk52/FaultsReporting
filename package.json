@@ -12,7 +12,6 @@
     "iohook": "^0.4.0",
     "leaflet": "^1.4.0",
     "leaflet-offline": "^1.1.0",
-    "mouse-hooks": "^0.2.0",
     "ol": "^5.3.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
