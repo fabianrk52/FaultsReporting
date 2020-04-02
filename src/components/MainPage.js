@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { CheckBox, Option, DropDown, OptionGroup } from 'react-form-elements/'
 import fire from '../utils/fire'
 import '../styles/MainPage.css';
-import { Popout } from 'react-popout-component';
-import HyperModal from 'react-hyper-modal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import Modal from 'react-modal'
-import axios from 'axios'
-import ServerConnection from '../utils/ServerConnection'
-import ViewEditReportModal from './ViewEditReport'
+import '../styles/Table.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import Modal from 'react-modal';
+import ServerConnection from '../utils/ServerConnection';
+import ViewEditReportModal from './ViewEditReportModal';
 
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
 
-const dict = {
-    1: "כן",
-    2: "לא"
+const boolean_dict = {
+    true: "כן",
+    false: "לא"
 }
 
 export default function MainPage() {
@@ -58,7 +55,7 @@ export default function MainPage() {
     const validateForm = () => {
         const { description, fault_date, location, platform, platform_num, sub_platform, system, summary} = details
 
-        return (description === '' || fault_date === new Date() || location === '' || platform === 0 || platform_num === 0 ||
+        return !(description === '' || fault_date === new Date() || location === '' || platform === 0 || platform_num === 0 ||
             sub_platform === 0 || system === 0 || summary === '')
 
     }
@@ -104,7 +101,7 @@ export default function MainPage() {
         getReportsFromServer(() => {
             goToTable();
             setIsNewReportModalOpen(false);
-        }); 
+        });
     }
 
     function openViewEditReportModal() {
@@ -114,6 +111,7 @@ export default function MainPage() {
     function closeViewEditReportModal() {
         getReportsFromServer(() => {
             goToTable();
+            alert("got reports");
             setIsViewEditReportModalOpen(false);
         }); 
     }
@@ -135,7 +133,7 @@ export default function MainPage() {
                 report_status
             } = report //destructuring
             return (
-                <tr>
+                <tr key={_id}>
                     <td><span className="HyperlinkText" onClick={() => onSelectReportOnTable(report)}>{_id}</span></td>
                     <td>{report_summary}</td>
                     <td>{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
@@ -185,18 +183,16 @@ export default function MainPage() {
     // }
 
     const newReport = () => {
-        if (!validateForm()) {
-            console.log(details);
+        if (validateForm()) {
             const newDetails = {...details};
             newDetails.report_reporting_date = new Date();
             newDetails.reporter_username = 'current';
-            //fire.firestore().collection("reports2").add(newDetails);
-            axios
-                .post(`${server_ip}:${server_port}/reports/add`, newDetails)
-                .then(res => console.log(res))
-                .catch(err => console.error(err));
-            setDetails(emptyDetails);
-            closeNewReportModal();
+
+            serverConnection.newReport((res) => {
+                console.log(res);
+                setDetails(emptyDetails);
+                closeNewReportModal();
+            }, newDetails)            
         }
         else alert('חסרים ערכים בדו"ח התקלה')
     }
@@ -204,6 +200,7 @@ export default function MainPage() {
     const getReportsFromServer = (callback = null) => {
         serverConnection.getReports(res => {
             const reports = res.data;
+            console.log(reports);
             setTableData(reports);
             if (callback) {
                 callback();
@@ -288,8 +285,8 @@ export default function MainPage() {
                                 <select value={details.report_platform} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_platform: value }))} className="form-control">
                                     <option value="0" selected disabled>פלטפורמה</option>
                                     {
-                                        platforms.map((system, index) =>
-                                            <option value={system.id}>{system.name}</option>
+                                        platforms.map((platform, index) =>
+                                            <option key={platform.id} value={platform.id}>{platform.name}</option>
                                         )
                                     }
                                 </select>
@@ -302,7 +299,7 @@ export default function MainPage() {
                                     <option value="0" selected disabled>מערכת</option>
                                     {
                                         systems.map((system, index) =>
-                                            <option value={system.id}>{system.name}</option>
+                                            <option key={system.id} value={system.id}>{system.name}</option>
                                         )
                                     }
                                 </select>
@@ -320,7 +317,7 @@ export default function MainPage() {
                                     <option value="0" selected disabled>תת-פלטפורמה</option>
                                     {
                                         subPlatforms.map((sub_platform, index) =>
-                                            <option value={sub_platform.id}>{sub_platform.name}</option>
+                                            <option key={sub_platform.id} value={sub_platform.id}>{sub_platform.name}</option>
                                         )
                                     }
                                 </select>

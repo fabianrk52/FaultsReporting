@@ -7,9 +7,19 @@ export default class ServerConnection {
     }
 
     getReports = (callback) => {
-        const getReports_IP = `${this.ip}:${this.port}/reports/`;
+        const getReportsUrl = `${this.ip}:${this.port}/reports/`;
         axios
-        .get(getReports_IP, {
+        .get(getReportsUrl, {
+            timeout: 5000
+        })
+        .then(callback)
+        .catch(err => console.error(err));
+    }
+
+    getReportById = (callback, id) => {
+        const getReportUrl = `${this.ip}:${this.port}/reports/${id}`;
+        axios
+        .get(getReportUrl, {
             timeout: 5000
         })
         .then(callback)
@@ -17,9 +27,9 @@ export default class ServerConnection {
     }
 
     updateReport = (callback, id, report) => {
-        const updateReport_IP = `${this.ip}:${this.port}/reports/update/${id}`;
+        const updateReportUrl = `${this.ip}:${this.port}/reports/update/${id}`;
         axios
-        .put(updateReport_IP, report, {
+        .put(updateReportUrl, report, {
             timeout: 5000
         })
         .then(callback)
@@ -27,12 +37,12 @@ export default class ServerConnection {
     }
 
     newReport = (callback, report) => {
-        const newReport_IP = `${this.ip}:${this.port}/reports/add`;
+        const newReportUrl = `${this.ip}:${this.port}/reports/add`;
         axios
-        .post(newReport_IP, report, {
+        .post(newReportUrl, report, {
             timeout: 5000
         })
-        .then(res => console.log(res))
+        .then(callback)
         .catch(err => console.error(err));
     }
 }
