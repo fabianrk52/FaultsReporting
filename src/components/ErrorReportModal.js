@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/MainPage.css';
 import ReportModal from './ReportModal';
-import ViewEditReportForm from './ViewEditReportForm';
+import ErrorReportForm from './ErrorReportForm';
 
-export default function ViewEditReportModal(props) {
+export default function ErrorReportModal(props) {
     const serverConnection = props.serverConnection;
     const reportDetails = props.reportDetails;
     const isModalOpen = props.isModalOpen;
@@ -13,27 +13,20 @@ export default function ViewEditReportModal(props) {
     const systems = props.systems;
     const appElement = props.appElement;
 
-    const [titleText, setTitleText] = useState("צפייה בתקלה");
-
-    const onEditingEnabled = () => {
-        setTitleText("עריכת תקלה");
-    }
-
-    const FormComponent = <ViewEditReportForm 
+    const FormComponent = <ErrorReportForm 
         serverConnection = {serverConnection} 
         reportDetails = {reportDetails} 
         platforms = {platforms} 
         subPlatforms = {subPlatforms} 
         systems = {systems} 
-        onEditingEnabled = {onEditingEnabled} 
-        closeViewEditReportModal = {closeModal}
+        closeModal = {closeModal}
     />;
     
     return (
         <ReportModal
             isOpen = {isModalOpen} 
             onRequestClose = {closeModal} 
-            title = {titleText} 
+            title = "דיווח תקלה" 
             HostedComponent = {FormComponent}
             appElement = {appElement}
         />

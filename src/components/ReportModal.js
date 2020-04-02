@@ -14,6 +14,7 @@ export default function ReportModal(props) {
     const closeReportModal = props.onRequestClose;
     const modalTitle = props.title;
     const HostedComponent = props.HostedComponent;
+    const appElement = props.appElement;
     
     return (
         <Modal
@@ -23,15 +24,13 @@ export default function ReportModal(props) {
                 contentLabel="Report Modal"
                 className="Modal container"
                 overlayClassName="Overlay"
-                parentSelector = {
-                    () => document.getElementById("main-page")
-                }
+                appElement={appElement}
             >
             <div className="container" style={{position: "relative"}}>
                 <label className="headline text-center" style={{fontSize: "22px", paddingBottom: 0, paddingTop: ".5rem"}}>
                     <p style={{marginBottom: 0}}>{modalTitle}</p>
                 </label>
-                <button class='btn' style={closeButtonStyle} onClick={closeReportModal}>
+                <button className='btn' style={closeButtonStyle} onClick={closeReportModal}>
                     <FontAwesomeIcon icon={faTimes}/> 
                 </button>
             </div>

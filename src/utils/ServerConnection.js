@@ -36,7 +36,7 @@ export default class ServerConnection {
         .catch(err => console.error(err));
     }
 
-    newReport = (callback, report) => {
+    addReport = (callback, report) => {
         const newReportUrl = `${this.ip}:${this.port}/reports/add`;
         axios
         .post(newReportUrl, report, {

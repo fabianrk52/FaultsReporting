@@ -7,6 +7,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import ServerConnection from '../utils/ServerConnection';
 import ViewEditReportModal from './ViewEditReportModal';
+import ErrorReportModal from './ErrorReportModal';
 
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
@@ -17,6 +18,7 @@ const boolean_dict = {
 }
 
 export default function MainPage() {
+    const self = document.getElementById("main-page");
     const serverConnection = new ServerConnection(server_ip, server_port);
     const [visibleTable, setVisibleTable] = useState(true);
     const [visibleFirst, setVisibleFirst] = useState(false);
@@ -24,11 +26,11 @@ export default function MainPage() {
     const [errorId, setErrorId] = useState(null);
     const emptyDetails = {
         report_description: '',
-        report_fault_date: new Date(), 
+        report_fault_date: null, 
         report_location: '', 
         report_platform: 0, 
         report_platform_num: 0,  
-        report_reporting_date: new Date(), 
+        report_reporting_date: null, 
         report_reporter_username: '', 
         report_sub_platform: 0, 
         report_system: 0, 
@@ -111,7 +113,6 @@ export default function MainPage() {
     function closeViewEditReportModal() {
         getReportsFromServer(() => {
             goToTable();
-            alert("got reports");
             setIsViewEditReportModalOpen(false);
         }); 
     }
@@ -174,29 +175,6 @@ export default function MainPage() {
         styleFinal.display = "inline"
     }
 
-    // const finishInvesigate = () => {
-    //     if (!validateInvesigateForm()) {
-    //         fire.firestore().collection("investigations").add({ ...investigateDetails, errorId: errorId })
-    //         goToTable()
-    //     }
-    //     else alert('חסרים ערכים בחקירת התקלה')
-    // }
-
-    const newReport = () => {
-        if (validateForm()) {
-            const newDetails = {...details};
-            newDetails.report_reporting_date = new Date();
-            newDetails.reporter_username = 'current';
-
-            serverConnection.newReport((res) => {
-                console.log(res);
-                setDetails(emptyDetails);
-                closeNewReportModal();
-            }, newDetails)            
-        }
-        else alert('חסרים ערכים בדו"ח התקלה')
-    }
-
     const getReportsFromServer = (callback = null) => {
         serverConnection.getReports(res => {
             const reports = res.data;
@@ -249,180 +227,33 @@ export default function MainPage() {
 
     return (
         <div id="main-page">
-            <Modal
+            <ErrorReportModal
                 id="error-report-modal"
-                isOpen={isNewReportModalOpen}
-                onRequestClose={closeNewReportModal}
-                contentLabel="Report new fault"
-                className="Modal container"
-                overlayClassName="Overlay"
-                parentSelector = {
-                    () => document.getElementById("main-page")
-                }
-            >
-                <form style={styleFirst} className="form-wrapper">
-                    <label className="headline text-center" style={{fontSize: "24px"}}>
-                        <u >דיווח תקלה</u>
-                    </label>
-                    <div className="form-group">
-                        <label className="form-label">תקציר התקלה</label>
-                        <input value={details.report_summary} 
-                            onChange={
-                                ({ target: { value } }) => setDetails(details => ({ ...details, report_summary: value }))
-                            } type="text" className="form-control" placeholder="תקציר התקלה"/>
-                    </div>
-                    <div className="form-group">
-                    <label className="form-label">תיאור התקלה</label>
-                        <textarea value={details.report_description} rows="3" 
-                        onChange={
-                            ({ target: { value } }) => setDetails(details => ({ ...details, report_description: value }))
-                            } type="text" className="form-control" placeholder="תיאור התקלה (בפירוט)"/>
-                    </div>
-                    <div className="form-row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-label">פלטפורמה</label>
-                                <select value={details.report_platform} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_platform: value }))} className="form-control">
-                                    <option value="0" selected disabled>פלטפורמה</option>
-                                    {
-                                        platforms.map((platform, index) =>
-                                            <option key={platform.id} value={platform.id}>{platform.name}</option>
-                                        )
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-label">מערכת</label>
-                                <select value={details.report_system} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_system: value }))} className="form-control">
-                                    <option value="0" selected disabled>מערכת</option>
-                                    {
-                                        systems.map((system, index) =>
-                                            <option key={system.id} value={system.id}>{system.name}</option>
-                                        )
-                                    }
-                                </select>
-                            </div>
-                        </div>                      
-                    </div>
-
-                    <div className="form-row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-label">תת-פלטפורמה</label>
-                                <select value={details.report_sub_platform} onChange={
-                                    ({ target: { value } }) => setDetails(details => ({ ...details, report_sub_platform: value }))
-                                } className="form-control">
-                                    <option value="0" selected disabled>תת-פלטפורמה</option>
-                                    {
-                                        subPlatforms.map((sub_platform, index) =>
-                                            <option key={sub_platform.id} value={sub_platform.id}>{sub_platform.name}</option>
-                                        )
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-label">תאריך התקלה</label>
-                                <input value={details.report_fault_date} 
-                                onChange={
-                                    ({ target: { value } }) => setDetails(details => ({ ...details, report_fault_date: value }))
-                                } type="date" className="form-control" placeholder="תאריך התקלה" />
-                            </div>
-                        </div>                         
-                    </div>
-
-                    <div className="form-row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-label">מספר פלטפורמה</label>
-                                <input value={details.report_platform_num} 
-                                onChange={
-                                    ({ target: { value } }) => setDetails(details => ({ ...details, report_platform_num: value }))
-                                } type="number" className="form-control" placeholder="מספר פלטפורמה" />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="form-label">מיקום</label>
-                                <input value={details.report_location} 
-                                onChange={
-                                    ({ target: { value } }) => setDetails(details => ({ ...details, report_location: value }))
-                                } type="text" className="form-control" placeholder="מיקום"/>
-                            </div>
-                        </div>                         
-                    </div>
-
-                    <div className="buttons-wrapper">
-                        <button onClick={closeNewReportModal} type="button" className="btn btn-outline-primary"> {"<- חזור "} </button>
-                        {/* <button onClick={showSecondStage} type="button" className="btn btn-primary">המשך -></button> */}
-                        <button onClick={newReport} type="button" className="btn btn-primary">שלח דיווח -></button>
-                    </div>
-                </form>
-
-                {/* <form style={styleSecond} className="form-wrapper">
-                    <div className="form-group">
-                        <label className="headline">
-                            <u >שחזור התקלה</u>
-                        </label>
-                        <select value={details.isRepeatable} onChange={({ target: { value } }) => setDetails(details => ({ ...details, isRepeatable: value }))} className="custom-select custom-select-lg mb-3">
-                            <option value="0" selected disabled>האם התקלה משתחזרת על הכלי?</option>
-                            <option value="1">כן</option>
-                            <option value="2">לא</option>
-                        </select>
-                        <select value={details.isRepeatableOnOtherTanks} onChange={({ target: { value } }) => setDetails(details => ({ ...details, isRepeatableOnOtherTanks: value }))} className="custom-select custom-select-lg mb-3">
-                            <option value="0" selected disabled>האם התקלה משתחזרת על כלים נוספים?</option>
-                            <option value="1">כן</option>
-                            <option value="2">לא</option>
-                        </select>
-                        <textarea value={details.errorReason} onChange={({ target: { value } }) => setDetails(details => ({ ...details, errorReason: value }))} className="form-control" placeholder="תיאור התרחיש המתאר את התקלה" rows="3"></textarea>
-                    </div>
-                    <select value={details.solvedInTheField} onChange={({ target: { value } }) => setDetails(details => ({ ...details, solvedInTheField: value }))} className="custom-select custom-select-lg mb-3">
-                        <option value="0" selected disabled>האם מצאו פתרון זמני לתקלה בשטח?</option>
-                        <option value="1">כן</option>
-                        <option value="2">לא</option>
-                    </select>
-                    <select value={details.isInErrorTable} onChange={({ target: { value } }) => setDetails(details => ({ ...details, isInErrorTable: value }))} className="custom-select custom-select-lg mb-3">
-                        <option value="0" selected disabled>האם התקלה מופיעה בקובץ התקלות של המערכת הרלוונטית?</option>
-                        <option value="1">כן</option>
-                        <option value="2">לא</option>
-                    </select>
-                    <div className="buttons-wrapper">
-                        <button onClick={goToFirstStage} type="button" className="btn btn-outline-primary"> {"<- חזור לשלב הקודם "} </button>
-                        <button onClick={newReport} type="button" className="btn btn-outline-success">שלח דיווח -></button>
-                    </div>
-                </form>
-
-                <form style={styleFinal} className="form-wrapper">
-                    <label className="headline">
-                        <u >חקר התקלה</u>
-                    </label>
-                    <div className="form-group">
-                        <input value={investigateDetails.investigator} onChange={({ target: { value } }) => setInvestigateDetails(investigateDetails => ({ ...investigateDetails, investigator: value }))} type="text" className="form-control" placeholder="שם המתחקר" />
-                    </div>
-                    <div className="form-group">
-                        <textarea value={investigateDetails.errorReason} onChange={({ target: { value } }) => setInvestigateDetails(investigateDetails => ({ ...investigateDetails, errorReason: value }))} className="form-control" placeholder="סיבת התקלה" rows="3"></textarea>
-                    </div>
-                    <div className="form-group">
-                        <textarea value={investigateDetails.solution} onChange={({ target: { value } }) => setInvestigateDetails(investigateDetails => ({ ...investigateDetails, solution: value }))} className="form-control" placeholder="פיתרון התקלה" rows="3"></textarea>
-                    </div>
-                    <div className="form-group">
-                        <textarea value={investigateDetails.description} onChange={({ target: { value } }) => setInvestigateDetails(investigateDetails => ({ ...investigateDetails, description: value }))} className="form-control" placeholder="טקסט חופשי" rows="3"></textarea>
-                    </div>
-                    <button onClick={finishInvesigate} type="button" className="btn btn-outline-success">סיים תחקור</button>
-                </form> */}
-            </Modal>
+                reportDetails={emptyDetails} 
+                isModalOpen={isNewReportModalOpen}
+                closeModal={closeNewReportModal}
+                appElement={self} 
+                platforms={platforms} 
+                subPlatforms={subPlatforms} 
+                systems={systems} 
+                serverConnection={serverConnection}/>
             
-            <ViewEditReportModal reportDetails={selectedFault} isViewEditReportModalOpen={isViewEditReportModalOpen} 
-            closeViewEditReportModal={closeViewEditReportModal} platforms={platforms} subPlatforms={subPlatforms} systems={systems} serverConnection={serverConnection}/>
+            <ViewEditReportModal 
+                id="view-edit-report-modal" 
+                reportDetails={selectedFault} 
+                isModalOpen={isViewEditReportModalOpen} 
+                closeModal={closeViewEditReportModal} 
+                appElement={self} 
+                platforms={platforms} 
+                subPlatforms={subPlatforms} 
+                systems={systems} 
+                serverConnection={serverConnection}/>
 
             <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <FontAwesomeIcon icon={faBars}/>
                 </button>
-                <a className="navbar-brand">Curernt User</a>
+                <a className="navbar-brand" href=".">Curernt User</a>
             </nav>
 
             <div>

@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react';
 import '../styles/MainPage.css';
 import formatISODate from '../utils/common';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons'
+import { faUpload } from '@fortawesome/free-solid-svg-icons'
 
-export default function ViewEditReportForm(props) {
+export default function ErrorReportForm(props) {
     const serverConnection = props.serverConnection;
     const reportDetails = props.reportDetails;
     const platforms = props.platforms;
     const subPlatforms = props.subPlatforms;
     const systems = props.systems;
     
-    const onEditingEnabled = props.onEditingEnabled;
-    const closeViewEditReportModal = props.closeViewEditReportModal;
+    const closeModal = props.closeModal;
 
     //TODO: Delete this afterwards!
     const emptyDetails = {
@@ -33,30 +32,18 @@ export default function ViewEditReportForm(props) {
 
     const [details, setDetails] = useState(emptyDetails)
 
+    const addReport = () => {
+        serverConnection.addReport((res) => {
+            console.log(res);
+            closeModal();
+        }, details);
+    }
+
     useEffect(() => {
         if (reportDetails) {
             setDetails(reportDetails);
         }
     }, [reportDetails]);
-
-    const enableEditing = () => {
-        var formControls = document.getElementsByClassName("form-control");
-        for(var i = 0; i < formControls.length; i++) {
-            formControls[i].disabled = false;
-        }
-
-        document.getElementById("edit-button").className = hiddenButtonClass;
-        document.getElementById("save-button").className = displayedButtonClass;
-
-        onEditingEnabled();
-    }
-
-    const updateReport = () => {
-        serverConnection.updateReport((res) => {
-            console.log(res);
-            closeViewEditReportModal();
-        }, reportDetails._id, details);
-    }
 
     return (
         <form className="form-wrapper">
@@ -65,26 +52,21 @@ export default function ViewEditReportForm(props) {
                 <input value={details ? details.report_summary : null} 
                     onChange={
                         ({ target: { value } }) => setDetails(details => ({ ...details, report_summary: value }))
-                    } type="text" className="form-control form-control-sm" placeholder="תקציר התקלה" disabled/>
+                    } type="text" className="form-control form-control-sm" placeholder="תקציר התקלה"/>
             </div>
             <div className="form-group">
                 <label className="form-label form-label-sm">תיאור התקלה</label>
                 <textarea value={details ? details.report_description : null} rows="3" 
                 onChange={
                     ({ target: { value } }) => setDetails(details => ({ ...details, report_description: value }))
-                    } type="text" className="form-control form-control-sm" placeholder="תיאור התקלה (בפירוט)" disabled/>
-            </div>
-            <div className="form-group" style={{marginBottom: "1rem"}}>
-                <label className="form-label form-label-sm">המדווח על התקלה</label>
-                <input value={reportDetails ? reportDetails.report_reporter_username : null} 
-                    type="text" className="form-control form-control-sm" placeholder="המדווח על התקלה" disabled/>
+                    } type="text" className="form-control form-control-sm" placeholder="תיאור התקלה (בפירוט)"/>
             </div>
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
                         <label className="form-label form-label-sm">פלטפורמה</label>
-                        <select value={details ? details.report_platform : "0"} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_platform: value }))} className="form-control form-control-sm" disabled>
-                            <option value="0" disabled>פלטפורמה</option>
+                        <select value={details ? details.report_platform : "0"} onChange={({ target: { value } }) => setDetails(details => ({ ...details, report_platform: value }))} className="form-control form-control-sm">
+                            <option value="0">פלטפורמה</option>
                             {
                                 platforms.map((platform, index) =>
                                     <option key={platform.id} value={platform.id}>{platform.name}</option>
@@ -99,8 +81,8 @@ export default function ViewEditReportForm(props) {
                         <select value={details ? details.report_system : "0"} onChange={
                             ({ target: { value } }) => 
                                 setDetails(details => ({ ...details, report_system: value }))
-                            } className="form-control form-control-sm" disabled>
-                            <option value="0" disabled>מערכת</option>
+                            } className="form-control form-control-sm">
+                            <option value="0">מערכת</option>
                             {
                                 systems.map((system, index) =>
                                     <option key={system.id} value={system.id}>{system.name}</option>
@@ -117,8 +99,8 @@ export default function ViewEditReportForm(props) {
                         <label className="form-label form-label-sm">תת-פלטפורמה</label>
                         <select value={details ? details.report_sub_platform : "0"} onChange={
                             ({ target: { value } }) => setDetails(details => ({ ...details, report_sub_platform: value }))
-                        } className="form-control form-control-sm" disabled>
-                            <option value="0" disabled>תת-פלטפורמה</option>
+                        } className="form-control form-control-sm">
+                            <option value="0">תת-פלטפורמה</option>
                             {
                                 subPlatforms.map((sub_platform, index) =>
                                     <option key={sub_platform.id} value={sub_platform.id}>{sub_platform.name}</option>
@@ -133,7 +115,7 @@ export default function ViewEditReportForm(props) {
                         <input value={details ? formatISODate(details.report_fault_date) : null} 
                         onChange={
                             ({ target: { value } }) => setDetails(details => ({ ...details, report_fault_date: (new Date(value)).toISOString() }))
-                        } type="date" className="form-control form-control-sm" placeholder="תאריך התקלה" disabled/>
+                        } type="date" className="form-control form-control-sm" placeholder="תאריך התקלה"/>
                     </div>
                 </div>                         
             </div>
@@ -145,7 +127,7 @@ export default function ViewEditReportForm(props) {
                         <input value={details ? details.report_platform_num : null} 
                         onChange=
                             {({ target: { value } }) => setDetails(details => ({ ...details, report_platform_num: value }))
-                        } type="number" className="form-control form-control-sm" placeholder="מספר פלטפורמה" disabled/>
+                        } type="number" className="form-control form-control-sm" placeholder="מספר פלטפורמה"/>
                     </div>
                 </div>
                 <div className="col-md-6">
@@ -154,17 +136,14 @@ export default function ViewEditReportForm(props) {
                         <input value={details ? details.report_location : null} 
                         onChange={
                             ({ target: { value } }) => setDetails(details => ({ ...details, report_location: value }))
-                        } type="text" className="form-control form-control-sm" placeholder="מיקום" disabled/>
+                        } type="text" className="form-control form-control-sm" placeholder="מיקום"/>
                     </div>
                 </div>                         
             </div>
 
             <div className="buttons-wrapper">
-                <button id="edit-button" onClick={enableEditing} type="button" className={displayedButtonClass}>
-                    <FontAwesomeIcon icon={faEdit}/> ערוך
-                </button>
-                <button id="save-button" onClick={updateReport} type="button" className={hiddenButtonClass}>
-                    <FontAwesomeIcon icon={faSave}/> שמור
+                <button id="finish-button" onClick={addReport} type="button" className={displayedButtonClass}>
+                    <FontAwesomeIcon icon={faUpload}/> סיים
                 </button>
             </div>
         </form>
