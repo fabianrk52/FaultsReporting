@@ -8,10 +8,15 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "all": "0.0.0",
     "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "firebase": "^7.9.1",
     "iohook": "^0.4.0",
     "leaflet": "^1.4.0",
     "leaflet-offline": "^1.1.0",
+    "mongoose": "^5.9.7",
     "ol": "^5.3.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -24,7 +29,8 @@
     "rtl-detect": "^1.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
+    "start": "concurrently \"node server\" \"npm run dev\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
