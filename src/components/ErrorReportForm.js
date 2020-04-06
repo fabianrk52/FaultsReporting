@@ -28,11 +28,11 @@ export default function ErrorReportForm(props) {
     }
 
     const displayedButtonClass = "btn btn-primary";
-    const hiddenButtonClass = "btn btn-primary d-none";
 
     const [details, setDetails] = useState(emptyDetails)
 
     const addReport = () => {
+        details.report_reporting_date = (new Date()).toISOString();
         serverConnection.addReport((res) => {
             console.log(res);
             closeModal();
@@ -112,10 +112,9 @@ export default function ErrorReportForm(props) {
                 <div className="col-md-6">
                 <div className="form-group">
                         <label className="form-label form-label-sm">תאריך התקלה</label>
-                        <input value={details ? formatISODate(details.report_fault_date) : null} 
-                        onChange={
-                            ({ target: { value } }) => setDetails(details => ({ ...details, report_fault_date: (new Date(value)).toISOString() }))
-                        } type="date" className="form-control form-control-sm" placeholder="תאריך התקלה"/>
+                        <input onChange={({ target: { value } }) => setDetails(details => ({
+                             ...details, report_fault_date: (new Date(value)).toISOString() 
+                        }))} type="date" className="form-control form-control-sm" placeholder="תאריך התקלה"/>
                     </div>
                 </div>                         
             </div>

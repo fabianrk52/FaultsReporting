@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles/MainPage.css';
 import ReportModal from './ReportModal';
 import ErrorReportForm from './ErrorReportForm';

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import fire from '../utils/fire'
 import '../styles/MainPage.css';
 import '../styles/Table.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import Modal from 'react-modal';
 import ServerConnection from '../utils/ServerConnection';
 import ViewEditReportModal from './ViewEditReportModal';
 import ErrorReportModal from './ErrorReportModal';
@@ -12,18 +10,10 @@ import ErrorReportModal from './ErrorReportModal';
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
 
-const boolean_dict = {
-    true: "כן",
-    false: "לא"
-}
-
 export default function MainPage() {
-    const self = document.getElementById("main-page");
+    const self = document.getElementById("main-page"); //Getting current element manually as no better method found
     const serverConnection = new ServerConnection(server_ip, server_port);
-    const [visibleTable, setVisibleTable] = useState(true);
-    const [visibleFirst, setVisibleFirst] = useState(false);
-    const [visibleSecond, setVisibleSecond] = useState(false);
-    const [errorId, setErrorId] = useState(null);
+
     const emptyDetails = {
         report_description: '',
         report_fault_date: null, 
@@ -36,72 +26,21 @@ export default function MainPage() {
         report_system: 0, 
         report_summary: ''
     }
-    const [details, setDetails] = useState(emptyDetails)
-    const [investigateDetails, setInvestigateDetails] = useState({
-        errorId: '',
-        investigator: '',
-        errorReason: '',
-        solution: '',
-        description: ''
-    })
+    
     const [tableData, setTableData] = useState([]);
     const [platforms, setPlatforms] = useState([]);
     const [subPlatforms, setSubPlatforms] = useState([]);
     const [systems, setSystems] = useState([]);
-    const [users, setUsers] = useState([]);
     const [selectedFault, setSelectedFault] = useState(null);
-    const [investigations, setInvestigations] = useState([]);
     const [isNewReportModalOpen, setIsNewReportModalOpen] = useState(false);
     const [isViewEditReportModalOpen, setIsViewEditReportModalOpen] = useState(false);
-
-    const validateForm = () => {
-        const { description, fault_date, location, platform, platform_num, sub_platform, system, summary} = details
-
-        return !(description === '' || fault_date === new Date() || location === '' || platform === 0 || platform_num === 0 ||
-            sub_platform === 0 || system === 0 || summary === '')
-
-    }
-
-    const validateInvesigateForm = () => {
-        const { investigator, errorReason, solution, description } = investigateDetails
-
-        return (investigator === '' || errorReason === '' || solution === '' || description === '')
-
-    }
-
-    function showSecondStage() {
-        setVisibleFirst(false)
-        setVisibleSecond(true)
-    }
-
-    function showFinalStage() {
-        setErrorId(selectedFault.id)
-        setSelectedFault(null)
-        setVisibleTable(false)
-        setVisibleFirst(false)
-        setVisibleSecond(false)
-    }
-
-    function goToFirstStage() {
-        setVisibleFirst(true)
-        setVisibleSecond(false)
-        setVisibleTable(false)
-        openNewReportModal()
-    }
-
-    function goToTable() {
-        setVisibleTable(true)
-        setVisibleFirst(false)
-        setVisibleSecond(false)
-    }
 
     function openNewReportModal() {
         setIsNewReportModalOpen(true);
     }
 
     function closeNewReportModal() {
-        getReportsFromServer(() => {
-            goToTable();
+        getReports(() => {
             setIsNewReportModalOpen(false);
         });
     }
@@ -111,8 +50,7 @@ export default function MainPage() {
     }
 
     function closeViewEditReportModal() {
-        getReportsFromServer(() => {
-            goToTable();
+        getReports(() => {
             setIsViewEditReportModalOpen(false);
         }); 
     }
@@ -148,81 +86,55 @@ export default function MainPage() {
         })
     }
 
-    let styleTable = {}
-    let styleFirst = {}
-    let styleSecond = {}
-    let styleFinal = {}
-
-    if (visibleTable) {
-        styleTable.display = "inline"
-        styleFirst.display = "none"
-        styleSecond.display = "none"
-        styleFinal.display = "none"
-    }
-    else if (visibleFirst) {
-        styleTable.display = "none"
-        styleFirst.display = "inline"
-        styleSecond.display = "none"
-        styleFinal.display = "none"
-    } else if (visibleSecond) {
-        styleTable.display = "none"
-        styleFirst.display = "none"
-        styleFinal.display = "none"
-    } else {
-        styleTable.display = "none"
-        styleFirst.display = "none"
-        styleSecond.display = "none"
-        styleFinal.display = "inline"
-    }
-
-    const getReportsFromServer = (callback = null) => {
+    const getReports = (callback = null) => {
         serverConnection.getReports(res => {
             const reports = res.data;
-            console.log(reports);
+            console.log("Reports: " + reports);
             setTableData(reports);
             if (callback) {
                 callback();
             }
-        })
+        });
     }
 
-    const getSystems = async () => {
-        const data = await fire.firestore().collection("systems").get()
-        const systems = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setSystems(systems)
+    const getSystems = (callback = null) => {
+        serverConnection.getSystems(res => {
+            const systems = res.data;
+            console.log("Systems: " + systems);
+            setSystems(systems);
+            if (callback) {
+                callback();
+            }
+        });
     }
 
-    const getPlatforms = async () => {
-        const data = await fire.firestore().collection("platforms").get()
-        const platforms = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setPlatforms(platforms)
+    const getPlatforms = (callback = null) => {
+        serverConnection.getPlatforms(res => {
+            const platforms = res.data;
+            console.log("Platforms: " + platforms);
+            setPlatforms(platforms);
+            if (callback) {
+                callback();
+            }
+        });
     }
 
-    const getSubPlatforms = async () => {
-        const data = await fire.firestore().collection("sub_platforms").get()
-        const subPlatforms = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setSubPlatforms(subPlatforms)
-    }
-
-    const getInvestigations = async () => {
-        const data = await fire.firestore().collection("investigations").get()
-        const investigations = data.docs.map(doc => doc.data().errorId);
-        setInvestigations(investigations)
-    }
-
-    const getUsers = async () => {
-        const data = await fire.firestore().collection("users").get()
-        const users = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-        setUsers(users)
+    const getSubPlatforms = (callback = null) => {
+        serverConnection.getSubPlatforms(res => {
+            const subPlatforms = res.data;
+            console.log("Sub-Platforms: " + subPlatforms);
+            setSubPlatforms(subPlatforms);
+            if (callback) {
+                callback();
+            }
+        });
     }
 
     useEffect(() => {
-        getReportsFromServer();
+        getReports();
         getSystems();
         getPlatforms();
         getSubPlatforms();
-        getInvestigations();
-        getUsers();
     }, []);
 
     return (
@@ -257,7 +169,7 @@ export default function MainPage() {
             </nav>
 
             <div>
-                <div style={styleTable} className="table-page">
+                <div className="table-page">
                     <div className="headline">
                         <label>
                             <u><h1 >דיווח תקלות</h1></u>
@@ -283,7 +195,7 @@ export default function MainPage() {
                         </table>
                     </div>
                     <div className="button-wrapper">
-                        <button onClick={goToFirstStage} type="button" className="btn btn-outline-primary">פתח תקלה חדשה -></button>
+                        <button onClick={openNewReportModal} type="button" className="btn btn-outline-primary">פתח תקלה חדשה -></button>
                     </div>
                 </div>
             </div>
