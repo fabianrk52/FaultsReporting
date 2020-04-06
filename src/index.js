@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import MainPage from './components/MainPage';
-import Table from './components/Table';
+// import Table from './components/Table';
 import * as serviceWorker from './components/serviceWorker';
 
 ReactDOM.render(<MainPage />, document.getElementById('root'));
