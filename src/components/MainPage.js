@@ -6,6 +6,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import ServerConnection from '../utils/ServerConnection';
 import ViewEditReportModal from './ViewEditReportModal';
 import ErrorReportModal from './ErrorReportModal';
+import Register from './Register';
+import Login from './LoginComp';
 
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
@@ -199,6 +201,8 @@ export default function MainPage() {
                     </div>
                 </div>
             </div>
+            <Register></Register>
+            <Login></Login>
         </div>
     )
 }
