@@ -6,6 +6,14 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import ServerConnection from '../utils/ServerConnection';
 import ViewEditReportModal from './ViewEditReportModal';
 import ErrorReportModal from './ErrorReportModal';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { withStyles } from '@material-ui/core/styles';
+
 
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
@@ -34,6 +42,34 @@ export default function MainPage() {
     const [selectedFault, setSelectedFault] = useState(null);
     const [isNewReportModalOpen, setIsNewReportModalOpen] = useState(false);
     const [isViewEditReportModalOpen, setIsViewEditReportModalOpen] = useState(false);
+
+    const StyledTableCell = withStyles((theme) => ({
+        head: {
+            fontSize: "1.1rem", 
+            fontWeight: "bold", 
+            padding: 8,  
+            color: theme.palette.common.white
+        },
+        body: {
+            fontSize: "1.1rem", 
+            padding: 8
+        },
+    }))(TableCell);
+
+    const StyledTableRow = withStyles((theme) => ({
+        root: {
+            '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.background.default,
+            },
+        },
+    }))(TableRow);
+
+    const tableWrapperStyle = {
+        paddingBottom: "2%", 
+        paddingTop: "2%", 
+        paddingLeft: "2%", 
+        paddingRight: "2%"
+    };
 
     function openNewReportModal() {
         setIsNewReportModalOpen(true);
@@ -72,16 +108,16 @@ export default function MainPage() {
                 report_status
             } = report //destructuring
             return (
-                <tr key={_id}>
-                    <td><span className="HyperlinkText" onClick={() => onSelectReportOnTable(report)}>{_id}</span></td>
-                    <td>{report_summary}</td>
-                    <td>{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
-                    <td>{report_priority || "טרם הוגדר"}</td>
-                    <td>{"-"}</td>  
-                    <td>{report_reporter_username}</td>
-                    <td>{report_platform}</td>
-                    <td>{report_status || "טרם עודכן"}</td>
-                </tr>
+                <StyledTableRow key={_id}>
+                    <StyledTableCell align="center"><span className="HyperlinkText" onClick={() => onSelectReportOnTable(report)}>{_id}</span></StyledTableCell>
+                    <StyledTableCell align="center">{report_summary}</StyledTableCell>
+                    <StyledTableCell align="center">{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</StyledTableCell>
+                    <StyledTableCell align="center">{report_priority || "טרם הוגדר"}</StyledTableCell>
+                    <StyledTableCell align="center">{"-"}</StyledTableCell>  
+                    <StyledTableCell align="center">{report_reporter_username}</StyledTableCell>
+                    <StyledTableCell align="center">{report_platform}</StyledTableCell>
+                    <StyledTableCell align="center">{report_status || "טרם עודכן"}</StyledTableCell>
+                </StyledTableRow>
             )
         })
     }
@@ -170,30 +206,28 @@ export default function MainPage() {
 
             <div>
                 <div className="table-page">
-                    <div className="headline">
-                        <label>
-                            <u><h1 >דיווח תקלות</h1></u>
-                        </label>
+                    <div>
+                        <h2 style={{fontWeight: "bold", textAlign: "center", marginTop: "1.1rem"}}>דיווח תקלות</h2>
                     </div>
-                    <div className="table-wrapper">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">תקציר התקלה</th>
-                                    <th scope="col">תאריך דיווח</th>
-                                    <th scope="col">עדיפות</th>
-                                    <th scope="col">סוג המדווח</th>
-                                    <th scope="col">המדווח</th>
-                                    <th scope="col">פלטפורמה</th>
-                                    <th scope="col">סטאטוס</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <TableContainer style={tableWrapperStyle}>
+                        <Table>
+                            <TableHead className="bg-primary">
+                                <TableRow>
+                                    <StyledTableCell align="center" scope="col">#</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">תקציר התקלה</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">תאריך דיווח</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">עדיפות</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">סוג המדווח</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">המדווח</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">פלטפורמה</StyledTableCell>
+                                    <StyledTableCell align="center" scope="col">סטאטוס</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
                                 {renderTableData()}
-                            </tbody>
-                        </table>
-                    </div>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                     <div className="button-wrapper">
                         <button onClick={openNewReportModal} type="button" className="btn btn-outline-primary">פתח תקלה חדשה -></button>
                     </div>
