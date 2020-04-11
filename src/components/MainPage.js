@@ -8,7 +8,7 @@ import ViewEditReportModal from './ViewEditReportModal';
 import ErrorReportModal from './ErrorReportModal';
 import Register from './Register';
 import Login from './LoginComp';
-
+import Errors from './Errors';
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
 
@@ -167,40 +167,12 @@ export default function MainPage() {
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <FontAwesomeIcon icon={faBars}/>
                 </button>
+                <button>
+                    Register
+                </button>
                 <a className="navbar-brand" href=".">Curernt User</a>
             </nav>
-
-            <div>
-                <div className="table-page">
-                    <div className="headline">
-                        <label>
-                            <u><h1 >דיווח תקלות</h1></u>
-                        </label>
-                    </div>
-                    <div className="table-wrapper">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">תקציר התקלה</th>
-                                    <th scope="col">תאריך דיווח</th>
-                                    <th scope="col">עדיפות</th>
-                                    <th scope="col">סוג המדווח</th>
-                                    <th scope="col">המדווח</th>
-                                    <th scope="col">פלטפורמה</th>
-                                    <th scope="col">סטאטוס</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {renderTableData()}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="button-wrapper">
-                        <button onClick={openNewReportModal} type="button" className="btn btn-outline-primary">פתח תקלה חדשה -></button>
-                    </div>
-                </div>
-            </div>
+            <Errors openNewReportModal={openNewReportModal} renderTableData={renderTableData}></Errors>
             <Register></Register>
             <Login></Login>
         </div>
