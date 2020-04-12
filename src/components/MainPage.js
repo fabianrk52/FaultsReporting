@@ -9,6 +9,8 @@ import ErrorReportModal from './ErrorReportModal';
 import Register from './Register';
 import Login from './LoginComp';
 import Errors from './Errors';
+import Landing from './Landing';
+import {Route, NavLink, HashRouter} from "react-router-dom";
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
 
@@ -162,19 +164,24 @@ export default function MainPage() {
                 subPlatforms={subPlatforms} 
                 systems={systems} 
                 serverConnection={serverConnection}/>
-
-            <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <FontAwesomeIcon icon={faBars}/>
-                </button>
-                <button>
-                    Register
-                </button>
-                <a className="navbar-brand" href=".">Curernt User</a>
-            </nav>
-            <Errors openNewReportModal={openNewReportModal} renderTableData={renderTableData}></Errors>
-            <Register></Register>
-            <Login></Login>
+    
+                <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <FontAwesomeIcon icon={faBars}/>
+                    </button>
+                    <HashRouter>
+                    <NavLink className="navbar-brand" to="/">Landing</NavLink>
+                    <NavLink className="navbar-brand" to="/Errors">Errors</NavLink>
+                    <NavLink className="navbar-brand" to="/Register">Register</NavLink>
+                    <NavLink className="navbar-brand" to="/Login">Login</NavLink>
+                    </HashRouter>
+                </nav>
+                <HashRouter>
+                    <Route exact path="/" component={Landing}></Route>
+                    <Route exact path="/Errors" render={() => <Errors openNewReportModal={openNewReportModal} renderTableData={renderTableData} />}></Route>
+                    <Route path="/Register" component={Register}></Route>
+                    <Route path="/Login" component={Login}></Route>
+                </HashRouter>
         </div>
     )
 }
