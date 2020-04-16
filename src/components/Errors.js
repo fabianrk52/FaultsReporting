@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 export default function Errors(props){
     return(
@@ -27,10 +27,6 @@ export default function Errors(props){
                 </tbody>
             </table>
         </div>
-        <div className="button-wrapper">
-            <button onClick={props.openNewReportModal} type="button" className="btn btn-outline-primary">פתח תקלה חדשה -></button>
-        </div>
     </div>
-
     )
 }

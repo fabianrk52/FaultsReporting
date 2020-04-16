@@ -18,7 +18,7 @@ export default function ReportModal(props) {
     
     return (
         <Modal
-                id="view-edit-report-modal"
+                id="report-modal"
                 isOpen={isReportModalOpen}
                 onRequestClose={closeReportModal}
                 contentLabel="Report Modal"

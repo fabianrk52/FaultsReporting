@@ -6,11 +6,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import ServerConnection from '../utils/ServerConnection';
 import ViewEditReportModal from './ViewEditReportModal';
 import ErrorReportModal from './ErrorReportModal';
-import Register from './Register';
-import Login from './LoginComp';
 import Errors from './Errors';
-import Landing from './Landing';
-import {Route, NavLink, HashRouter} from "react-router-dom";
+import {Route, BrowserRouter} from "react-router-dom";
 const server_ip = "http://127.0.0.1"
 const server_port = "4000"
 
@@ -142,46 +139,42 @@ export default function MainPage() {
     }, []);
 
     return (
-        <div id="main-page">
-            <ErrorReportModal
-                id="error-report-modal"
-                reportDetails={emptyDetails} 
-                isModalOpen={isNewReportModalOpen}
-                closeModal={closeNewReportModal}
-                appElement={self} 
-                platforms={platforms} 
-                subPlatforms={subPlatforms} 
-                systems={systems} 
-                serverConnection={serverConnection}/>
-            
-            <ViewEditReportModal 
-                id="view-edit-report-modal" 
-                reportDetails={selectedFault} 
-                isModalOpen={isViewEditReportModalOpen} 
-                closeModal={closeViewEditReportModal} 
-                appElement={self} 
-                platforms={platforms} 
-                subPlatforms={subPlatforms} 
-                systems={systems} 
-                serverConnection={serverConnection}/>
-    
-                <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <FontAwesomeIcon icon={faBars}/>
-                    </button>
-                    <HashRouter>
-                    <NavLink className="navbar-brand" to="/">Landing</NavLink>
-                    <NavLink className="navbar-brand" to="/Errors">Errors</NavLink>
-                    <NavLink className="navbar-brand" to="/Register">Register</NavLink>
-                    <NavLink className="navbar-brand" to="/Login">Login</NavLink>
-                    </HashRouter>
-                </nav>
-                <HashRouter>
-                    <Route exact path="/" component={Landing}></Route>
-                    <Route exact path="/Errors" render={() => <Errors openNewReportModal={openNewReportModal} renderTableData={renderTableData} />}></Route>
-                    <Route path="/Register" component={Register}></Route>
-                    <Route path="/Login" component={Login}></Route>
-                </HashRouter>
+        <div id="main-page" className="container-fluid" style={{paddingRight: 0, paddingLeft: 0}}>
+            <nav className="navbar navbar-dark bg-primary sticky-top pull-right">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <FontAwesomeIcon icon={faBars}/>
+                </button>
+            </nav>
+            <div id="main-container" className="container-fluid">
+                <BrowserRouter basename="/app">
+                    <Route exact path="/" render={() => <Errors openNewReportModal={openNewReportModal} renderTableData={renderTableData} />}></Route>
+                </BrowserRouter>
+                <ErrorReportModal
+                    id="error-report-modal"
+                    reportDetails={emptyDetails} 
+                    isModalOpen={isNewReportModalOpen}
+                    closeModal={closeNewReportModal}
+                    appElement={self} 
+                    platforms={platforms} 
+                    subPlatforms={subPlatforms} 
+                    systems={systems} 
+                    serverConnection={serverConnection}/>
+                
+                <ViewEditReportModal 
+                    id="view-edit-report-modal" 
+                    reportDetails={selectedFault} 
+                    isModalOpen={isViewEditReportModalOpen} 
+                    closeModal={closeViewEditReportModal} 
+                    appElement={self} 
+                    platforms={platforms} 
+                    subPlatforms={subPlatforms} 
+                    systems={systems} 
+                    serverConnection={serverConnection}/>
+                
+                <div className="button-wrapper">
+                    <button onClick={openNewReportModal} type="button" className="btn btn-outline-primary">פתח תקלה חדשה -></button>
+                </div>
+            </div>
         </div>
     )
 }

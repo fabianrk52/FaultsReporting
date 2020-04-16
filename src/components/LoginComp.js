@@ -1,4 +1,4 @@
-import React,{component} from "react";
+import React from "react";
 
 class LoginComp extends React.Component {
     render(){
