@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal'
 import '../styles/MainPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,11 +10,22 @@ export default function ReportModal(props) {
     const closeButtonStyle = isRightToLeft ? {position: "absolute", top: "5px", right: "5px", fontSize: "26px", backgroundColor: 'transparent', borderRadius: 0, padding: 0}
                                              : {position: "absolute", top: "5px", left: "5px", fontSize: "26px", backgroundColor: 'transparent', borderRadius: 0, padding: 0}
 
+    // Handle Props
     const isReportModalOpen = props.isOpen;
     const closeReportModal = props.onRequestClose;
     const modalTitle = props.title;
     const HostedComponent = props.HostedComponent;
     const appElement = props.appElement;
+    const getSystems = props.getSystems;
+    const getPlatforms = props.getPlatforms;
+    const getSubPlatforms = props.getSubPlatforms;
+    ////
+
+    useEffect(() => {
+        getSystems();
+        getPlatforms();
+        getSubPlatforms();
+    }, []);
     
     return (
         <Modal
