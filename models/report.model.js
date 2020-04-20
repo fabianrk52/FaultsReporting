@@ -1,37 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Report = new Schema({
-    report_description: {
-        type: String
-    },
-    report_fault_date: {
-        type: Date
-    },
-    report_location: {
-        type: String
-    },
-    report_platform: {
-        type: Number
-    },
-    report_sub_platform: {
-        type: Number
-    },
-    report_platform_num: {
-        type: String
-    },
-    report_reporting_date: {
-        type: Date
-    },
-    report_reporter_username: {
-        type: String
-    },
-    report_summary: {
-        type: String
-    },
-    report_system: {
-        type: Number
-    }
-});
-
-module.exports = mongoose.model('Report', Report);
+const reportSchema = new Schema({
+    description: {type: String, required: true},
+    fault_date: {type: String, required: true},
+    location: {type: String, required: true},
+    platform: {type: Number, required: true},
+    sub_platform: {type: Number},
+    platform_num: {type: String, required: true},
+    reporting_date: {type: String},
+    reporter_username: {type: String},
+    summary: {type: String},
+    system: {type: Number}
+  }, {
+    timestamps: true,
+  });
+  
+const Report = mongoose.model('Report', reportSchema);
+module.exports =  Report;

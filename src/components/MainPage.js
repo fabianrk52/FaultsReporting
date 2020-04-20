@@ -64,23 +64,23 @@ export default function MainPage() {
         return tableData.map((report, index) => {
             const { 
                 _id, 
-                report_summary, 
-                report_reporting_date, 
-                report_priority, 
-                report_reporter_username, 
-                report_platform, 
-                report_status
+                summary, 
+                reporting_date, 
+                priority, 
+                reporter_username, 
+                platform, 
+                status
             } = report //destructuring
             return (
                 <tr key={_id}>
                     <td><span className="HyperlinkText" onClick={() => onSelectReportOnTable(report)}>{_id}</span></td>
-                    <td>{report_summary}</td>
-                    <td>{new Date(report_reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
-                    <td>{report_priority || "טרם הוגדר"}</td>
+                    <td>{summary}</td>
+                    <td>{new Date(reporting_date).toLocaleDateString("he-IL", "short") || "-"}</td>
+                    <td>{priority || "טרם הוגדר"}</td>
                     <td>{"-"}</td>  
-                    <td>{report_reporter_username}</td>
-                    <td>{report_platform}</td>
-                    <td>{report_status || "טרם עודכן"}</td>
+                    <td>{reporter_username}</td>
+                    <td>{platform}</td>
+                    <td>{status || "טרם עודכן"}</td>
                 </tr>
             )
         })

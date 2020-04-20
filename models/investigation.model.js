@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Investigation = new Schema({
-    investigation_description: {
+    description: {
         type: String
     },
-    investigation_error_id: {
+    error_id: {
         type: String
     },
-    investigation_error_reason: {
+    error_reason: {
         type: String
     },
-    investigation_investigator: {
+    investigator: {
         type: String
     },
-    investigation_solution: {
+    solution: {
         type: String
     }
 });

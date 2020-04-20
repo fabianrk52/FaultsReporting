@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Platform = new Schema({
-    platform_name: {
+    name: {
         type: String
     }
 });

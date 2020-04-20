@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let System = new Schema({
-    system_name: {
+    name: {
         type: String
     }
 });
