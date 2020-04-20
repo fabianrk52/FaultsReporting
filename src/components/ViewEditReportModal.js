@@ -4,6 +4,7 @@ import ReportModal from './ReportModal';
 import ViewEditReportForm from './ViewEditReportForm';
 
 export default function ViewEditReportModal(props) {
+    // Handle Props
     const serverConnection = props.serverConnection;
     const reportDetails = props.reportDetails;
     const isModalOpen = props.isModalOpen;
@@ -12,8 +13,14 @@ export default function ViewEditReportModal(props) {
     const subPlatforms = props.subPlatforms;
     const systems = props.systems;
     const appElement = props.appElement;
+    const getSystems = props.getSystems;
+    const getPlatforms = props.getPlatforms;
+    const getSubPlatforms = props.getSubPlatforms;
+    ////
 
+    // State
     const [titleText, setTitleText] = useState("צפייה בתקלה");
+    ////
 
     const onEditingEnabled = () => {
         setTitleText("עריכת תקלה");
@@ -36,6 +43,9 @@ export default function ViewEditReportModal(props) {
             title = {titleText} 
             HostedComponent = {FormComponent}
             appElement = {appElement}
+            getSystems = {getSystems}
+            getPlatforms = {getPlatforms}
+            getSubPlatforms = {getSubPlatforms}
         />
     )
 }
