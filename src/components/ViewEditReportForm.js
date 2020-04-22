@@ -53,6 +53,12 @@ export default function ViewEditReportForm(props) {
 
     const updateReport = () => {
         serverConnection.updateReport((res) => {
+            if (res.status.toString()[0] === "2") {
+                alert("התקלה עודכנה בהצלחה!");
+            }
+            else if (res.status.toString()[0] === "4") {
+                alert("קרתה תקלה בעדכון התקלה");
+            }
             console.log(res);
             closeViewEditReportModal();
         }, reportDetails._id, details);
