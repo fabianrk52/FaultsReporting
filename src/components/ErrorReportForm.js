@@ -34,6 +34,12 @@ export default function ErrorReportForm(props) {
     const addReport = () => {
         details.report_reporting_date = (new Date()).toISOString();
         serverConnection.addReport((res) => {
+            if (res.status.toString()[0] === "2") {
+                alert("התקלה דווחה בהצלחה!");
+            }
+            else if (res.status.toString()[0] === "4") {
+                alert("קרתה תקלה בדיווח התקלה");
+            }
             console.log(res);
             closeModal();
         }, details);
