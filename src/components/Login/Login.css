@@ -1,0 +1,100 @@
+.Login{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    direction: rtl;
+    color: white;
+    background-color: #1B507C;
+}
+
+.Login .Title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2vw;
+}
+
+.Login .Card {
+    padding: 2vw;
+    width: 20vw;
+    margin-top: 0.3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: grey 1px solid;
+    border-radius: 2%;
+}
+
+.Login .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0.5vw;
+    margin-top: 3vw;
+}
+
+.Login .form input {
+    margin-bottom: 0.9vw;
+    margin-top: 0.8vw;
+    font-size: 1.5vw;
+    background: transparent;
+    border: none;
+    border-bottom: 1px grey solid;
+    color: grey;
+    outline: none;
+    width: 70%;
+    text-align: center;
+    direction: ltr;
+}
+
+.Login .form label{
+    margin-top: 0.3vw;
+    font-size: 1.5vw;
+    text-align: center;
+    color: grey;
+}
+.Login .form .Button {
+    background: linear-gradient(to bottom, #949ee0, #575c80);
+    border-radius: 3px;
+    padding: 0.8vw;
+    color: white;
+    font-weight: 600;
+    width: 5vw;
+    font-size: 1.3vw;
+    margin-top: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Login .logos-box{
+    height: 6%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    top: 0;
+}
+.Login .logos-box .logo{
+    width: 5%;
+    margin-left: 0.5%;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    object-fit: fill;
+}
+.Login .Logo {
+    width: 10vw;
+}
+
+.Login .Error {
+    margin-top: 2vw;
+    color:red;
+}
+

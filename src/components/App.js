@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+// import './App.css';
 import firebase from './fire.js';
 
 class App extends Component {

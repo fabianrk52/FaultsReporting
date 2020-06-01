@@ -1,49 +1,77 @@
-import React from 'react';
-import './styles.css'
+import React, { useState, useEffect } from 'react';
+import logoRapat from '../../Assets/Images/mantak.png'
+import './Login.css'
+// import axios from 'axios'
 // import {useHistory} from "react-router-dom";
-import Register from '../Register';
-// import Login from './LoginComp';
+// import Register from '../Register';
 
-export default function Landing(){
+export default function Login() {
     // const history = useHistory();
 
-    return(
-    <div id="landing" className="container-fluid fill">
-        <nav className="navbar navbar-dark sticky-top pull-right transparent">
-            <a className="navbar-brand" href="#">
-                <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt=""/>
-                סמל היחידה
-            </a>
-            <button className="btn btn-light transparent menu-button" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                אודות
-            </button>
-            <button className="btn btn-light transparent menu-button" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                אתר הפרויקט
-            </button>
-            <button className="btn btn-light transparent menu-button" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                צור קשר
-            </button>
-            <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                כניסה
-            </button>
-        </nav>
-        <br/>
-        <div className="container">
-            <div className="row">
-                <div className="col">
-                    <h1 style={{color: "white"}}>
-                        <b>ברוכים הבאים<br/>למערכת דיווח תקלות</b>
-                    </h1>
-                    <br/>
-                    <h5 style={{color: "white"}}>המערכת נועדה לצורך דיווח תקלות מהשטח ישירות ליחידה לטובת קבלת טיפול מהיר ויעיל</h5>
-                </div>
-                <div className="col">
-                    <div className="container">
-                        <Register/>
-                    </div>
-                </div>
+    const dictionary = {
+        user: 'שם משתמש',
+        password: 'סיסמה'
+    }
+    const ENTER_KEY = "Enter";
+    const ENTER_KEY_CODE = 13;
+
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+
+    const onKeyPress = (e) => {
+        if (e.key == ENTER_KEY || e.code == ENTER_KEY || e.keyCode == ENTER_KEY_CODE) {
+            stopBubbling(e)
+            onSubmit()
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("keypress", onKeyPress)
+        return () => window.removeEventListener("keypress", onKeyPress)
+    }, [name, password])
+
+    const onSubmit = () => {
+        // axios.post('http://' + ServerIp + '/login',
+        //     {
+        //         name: name,
+        //         password: password
+        //     })
+        //     .then(res => {
+        //         if (res.data.token) {
+        //             alert("התחברת בהצלחה");
+        //             //   setAuth(res.data.token);
+        //         }
+        //         else {
+        //             alert("שם משתמש או סיסמה לא נכונים");
+        //         }
+        //     })
+        //     .catch(err => {
+        //     })
+    }
+
+    const stopBubbling = (event) => {
+        event.preventDefault();
+        event.stopPropagation()
+    }
+
+    return (
+        <div className="Login">
+            <div className='logos-box'>
+                <img src={logoRapat} alt="Logo" className=" logo Rapat"></img>
             </div>
-        </div>
-    </div>
+            <div className="Title">
+                <h1><b>ברוכים הבאים למערכת דיווח תקלות</b></h1>
+                <h5>המערכת נועדה לצורך דיווח תקלות מהשטח ישירות ליחידה לטובת קבלת טיפול מהיר ויעיל</h5>
+            </div>
+            <div className="form">
+            <h3>כניסה למערכת</h3>
+                <div className='Card'>
+                    <label>{dictionary.user + ':'}</label>
+                    <input name="user" type="text" onChange={e => setName(e.target.value)} required />
+                    <label>{dictionary.password + ':'}</label>
+                    <input name="password " type="password" onChange={e => setPassword(e.target.value)} required />
+                </div>
+                <input onClick={onSubmit} type="submit" value="התחבר" className="Button"></input>
+            </div>        </div>
     )
 }
