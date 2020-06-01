@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/MainPage.css';
+// import '../styles/MainPage.css';
+import './MainPage/styles.css';
 import formatISODate from '../utils/common';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons'

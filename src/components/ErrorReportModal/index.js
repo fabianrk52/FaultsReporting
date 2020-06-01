@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/MainPage.css';
-import ReportModal from './ReportModal';
-import ErrorReportForm from './ErrorReportForm';
+// import '../styles/MainPage.css';
+import ReportModal from '../ViewEditReportModal/ReportModal';
+import ErrorReportForm from '.';
 
 export default function ErrorReportModal(props) {
     // Handle Props

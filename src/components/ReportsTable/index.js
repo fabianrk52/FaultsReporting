@@ -6,8 +6,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
-import ViewEditReportModal from './ViewEditReportModal';
-import '../styles/Table.css';
+import ViewEditReportModal from '../ViewEditReportModal/ReportModal';
+import './styles.css';
 
 export default function ReportsTable(props){
     // Handle Props

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import '../styles/MainPage.css';
+import './styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import ServerConnection from '../utils/ServerConnection';
-import ErrorReportModal from './ErrorReportModal';
-import ReportsTable from './ReportsTable';
+import ServerConnection from '../../utils/ServerConnection';
+import ErrorReportModal from '../ErrorReportModal';
+import ReportsTable from '../ReportsTable';
 import {Route, BrowserRouter} from "react-router-dom";
 
 const server_ip = "http://127.0.0.1"

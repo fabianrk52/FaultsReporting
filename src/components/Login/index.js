@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/Landing.css'
+import './styles.css'
 // import {useHistory} from "react-router-dom";
-import Register from './Register';
+import Register from '../Register';
 // import Login from './LoginComp';
 
 export default function Landing(){

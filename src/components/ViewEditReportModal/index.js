@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import '../styles/MainPage.css';
-import ReportModal from './ReportModal';
+// import '../styles/MainPage.css';
+import '../MainPage/styles.css';
+import ReportModal from './ReportForm/ReportModal';
 import ViewEditReportForm from './ViewEditReportForm';
 
 export default function ViewEditReportModal(props) {
