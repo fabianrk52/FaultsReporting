@@ -33,7 +33,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
     margin-bottom: 0.5vw;
     margin-top: 3vw;
 }
@@ -79,7 +78,7 @@
     align-items: center;
     position: absolute;
     top: 0;
-    margin-right: 0.2%;
+    margin-right: 0.3%;
 }
 .Login .logos-box .logo{
     width: 5%;
