@@ -10,7 +10,9 @@ export default function Login() {
 
     const dictionary = {
         user: 'שם משתמש',
-        password: 'סיסמה'
+        password: 'סיסמה',
+        register: 'הרשמה',
+        connect: 'התחבר'
     }
     const ENTER_KEY = "Enter";
     const ENTER_KEY_CODE = 13;
@@ -57,21 +59,23 @@ export default function Login() {
     return (
         <div className="Login">
             <div className='logos-box'>
-                <img src={logoRapat} alt="Logo" className=" logo Rapat"></img>
+                <button type="button" class="btn btn-success logo">{dictionary.register}</button>
+                <img src={logoRapat} alt="Logo" className="logo Rapat"></img>
             </div>
             <div className="Title">
                 <h1><b>ברוכים הבאים למערכת דיווח תקלות</b></h1>
                 <h5>המערכת נועדה לצורך דיווח תקלות מהשטח ישירות ליחידה לטובת קבלת טיפול מהיר ויעיל</h5>
             </div>
             <div className="form">
-            <h3>כניסה למערכת</h3>
+                <h3>כניסה למערכת</h3>
                 <div className='Card'>
                     <label>{dictionary.user + ':'}</label>
                     <input name="user" type="text" onChange={e => setName(e.target.value)} required />
                     <label>{dictionary.password + ':'}</label>
                     <input name="password " type="password" onChange={e => setPassword(e.target.value)} required />
                 </div>
-                <input onClick={onSubmit} type="submit" value="התחבר" className="Button"></input>
-            </div>        </div>
+                <button type="submit" class="btn btn-secondary btn-lg mt-4" onClick={onSubmit}>{dictionary.connect}</button>
+            </div>
+        </div>
     )
 }

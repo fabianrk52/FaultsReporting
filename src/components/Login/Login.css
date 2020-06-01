@@ -40,8 +40,7 @@
 
 .Login .form input {
     margin-bottom: 0.9vw;
-    margin-top: 0.8vw;
-    font-size: 1.5vw;
+    font-size: 1vw;
     background: transparent;
     border: none;
     border-bottom: 1px grey solid;
@@ -54,7 +53,7 @@
 
 .Login .form label{
     margin-top: 0.3vw;
-    font-size: 1.5vw;
+    font-size: 1vw;
     text-align: center;
     color: grey;
 }
@@ -76,10 +75,11 @@
     height: 6%;
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     position: absolute;
     top: 0;
+    margin-right: 0.2%;
 }
 .Login .logos-box .logo{
     width: 5%;
