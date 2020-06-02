@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logoRapat from '../../Images/mantak.png'
 import './Login.css'
-import RegistrationModal from '../RegistrationModal';
+import Modal from '../Modal';
 // import axios from 'axios'
 // import {useHistory} from "react-router-dom";
 
@@ -87,14 +87,15 @@ export default function Login() {
                 </div>
                 <button type="submit" className="btn btn-secondary btn-lg mt-4" onClick={onSubmit}>{dictionary.connect}</button>
             </div>
-            <RegistrationModal
+            <Modal
                 className="modal"
                 show={showRegistration}
                 close={closeRegistration}
                 title={dictionary.registration}
                 save={dictionary.save}
+                type={dictionary.registration}
             >
-            </RegistrationModal>
+            </Modal>
         </div>
     )
 }

@@ -1,6 +1,11 @@
 import React from 'react';
+import Registration from '../Registration'
 
-import './RegistrationModal.css';
+import './Modal.css';
+
+const dictionary = {
+    registration: 'הרשמה',
+}
 
 const modal = (props) => {
     return (
@@ -15,7 +20,10 @@ const modal = (props) => {
                     <span className="close-modal-btn" onClick={props.close}>×</span>
                 </div>
                 <div className="modal-body">
-                    {props.children}
+                    {props.type === dictionary.registration ? 
+                    <Registration>
+                    </Registration> : 
+                    null}
                 </div>
                 <div className="modal-footer">
                     <button className="btn btn-success btn-lg mt-1">{props.save}</button>
