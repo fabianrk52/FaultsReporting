@@ -125,7 +125,7 @@ export default function Login() {
                 >
                     <Modal.Header className="header">
                         <Modal.Title>{dictionary.registration}</Modal.Title>
-                        <Modal.Title className="close-modal-btn">x</Modal.Title>
+                        <Modal.Title className="close-modal-btn" onClick={closeRegistration}>x</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="body">
                         <label>{dictionary.registration_text + ':'}</label>
