@@ -8,8 +8,8 @@ import {Route, HashRouter} from "react-router-dom";
 ReactDOM.render(
     <div id="index" className="container-fluid fill" style={{paddingRight: 0, paddingLeft: 0}}>
         <HashRouter>
-            <Route exact path="/" component={Landing}></Route>
-            <Route exact path="/app" component={MainPage}></Route>
+            <Route exact path="/" component={MainPage}></Route>
+            <Route exact path="/app" component={Landing}></Route>
         </HashRouter>
     </div>
     , document.getElementById('root')

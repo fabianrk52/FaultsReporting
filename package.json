@@ -3,26 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.27",
-    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@material-ui/core": "^4.9.11",
     "all": "0.0.0",
     "axios": "^0.19.2",
     "firebase": "^7.14.0",
     "iohook": "^0.4.0",
-    "leaflet": "^1.4.0",
+    "leaflet": "^1.6.0",
     "leaflet-offline": "^1.1.0",
-    "ol": "^5.3.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "ol": "^5.3.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-form-elements": "^4.14.0",
     "react-hook-mouse": "^1.0.0",
-    "react-hyper-modal": "^1.2.1",
+    "react-hyper-modal": "^1.2.11",
     "react-modal": "^3.11.2",
     "react-popout-component": "^1.8.5",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "2.1.8",
+    "react-scripts": "^3.4.1",
     "rtl-detect": "^1.0.2",
     "typeface-heebo": "0.0.72"
   },
@@ -42,6 +42,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.12.1"
+    "@fortawesome/fontawesome-free": "^5.13.0"
   }
 }
