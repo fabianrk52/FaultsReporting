@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import logoRapat from '../../Images/mantak.png'
 import './Login.css'
-import Modal from '../Modal';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 // import axios from 'axios'
 // import {useHistory} from "react-router-dom";
 
@@ -13,7 +14,11 @@ export default function Login() {
         password: 'סיסמה',
         registration: 'הרשמה',
         connect: 'התחבר',
-        save: "שמור"
+        save: "שמור",
+        reporter: "מדווח",
+        unit: "יחידה",
+        phone: "נייד",
+        registration_text: "נא למלא כל הפרטים"
     }
     const ENTER_KEY = "Enter";
     const ENTER_KEY_CODE = 13;
@@ -21,12 +26,16 @@ export default function Login() {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [showRegistration, setShowRegistration] = useState(false)
+    const [userName, setUserName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [reporter, setReporter] = useState('')
+    const [unitName, setUnitName] = useState('')
 
 
     const onKeyPress = (e) => {
         if (e.key == ENTER_KEY || e.code == ENTER_KEY || e.keyCode == ENTER_KEY_CODE) {
             stopBubbling(e)
-            onSubmit()
+            onLogin()
         }
     }
 
@@ -35,7 +44,7 @@ export default function Login() {
         return () => window.removeEventListener("keypress", onKeyPress)
     }, [name, password])
 
-    const onSubmit = () => {
+    const onLogin = () => {
         // axios.post('http://' + ServerIp + '/login',
         //     {
         //         name: name,
@@ -53,6 +62,26 @@ export default function Login() {
         //     .catch(err => {
         //     })
         alert("submit");
+    }
+
+    const onRegistration = () => {
+        // axios.post('http://' + ServerIp + '/login',
+        //     {
+        //         name: name,
+        //         password: password
+        //     })
+        //     .then(res => {
+        //         if (res.data.token) {
+        //             alert("התחברת בהצלחה");
+        //             //   setAuth(res.data.token);
+        //         }
+        //         else {
+        //             alert("שם משתמש או סיסמה לא נכונים");
+        //         }
+        //     })
+        //     .catch(err => {
+        //     })
+        alert("registration");
     }
 
     const stopBubbling = (event) => {
@@ -85,17 +114,40 @@ export default function Login() {
                     <label>{dictionary.password + ':'}</label>
                     <input name="password " type="password" onChange={e => setPassword(e.target.value)} required />
                 </div>
-                <button type="submit" className="btn btn-secondary btn-lg mt-4" onClick={onSubmit}>{dictionary.connect}</button>
+                <button type="submit" className="btn btn-secondary btn-lg mt-4" onClick={onLogin}>{dictionary.connect}</button>
             </div>
-            <Modal
-                className="modal"
-                show={showRegistration}
-                close={closeRegistration}
-                title={dictionary.registration}
-                save={dictionary.save}
-                type={dictionary.registration}
-            >
-            </Modal>
+            <div>
+                <Modal
+                    show={showRegistration} onHide={closeRegistration}
+                    className="Registration"
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header className="header">
+                        <Modal.Title>{dictionary.registration}</Modal.Title>
+                        <Modal.Title className="close-modal-btn">x</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="body">
+                        <label>{dictionary.registration_text + ':'}</label>
+                        <div className="form">
+                            <label>{dictionary.user + ':'}</label>
+                            <input name='username' onChange={e => setUserName(e.target.value)} />
+                            <label>{dictionary.password + ':'}</label>
+                            <input name='password' type='password' onChange={e => setPassword(e.target.value)} />
+                            <label>{dictionary.phone + ':'}</label>
+                            <input name='phone' type="number" onChange={e => setPhone(e.target.value)} />
+                            <label>{dictionary.unit + ':'}</label>
+                            <input name='unitname' onChange={e => setUnitName(e.target.value)} />
+                            <label>{dictionary.reporter + ':'}</label>
+                            <input name='reporter' onChange={e => setReporter(e.target.value)} />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer className="footer">
+                        <Button className="btn btn-success" onClick={onRegistration}>{dictionary.save} </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         </div>
     )
 }

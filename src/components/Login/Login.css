@@ -1,4 +1,4 @@
-.Login{
+.Login {
     height: 100%;
     width: 100%;
     display: flex;
@@ -50,12 +50,13 @@
     direction: ltr;
 }
 
-.Login .form label{
+.Login .form label {
     margin-top: 0.3vw;
     font-size: 1vw;
     text-align: center;
     color: grey;
 }
+
 .Login .form .Button {
     background: linear-gradient(to bottom, #949ee0, #575c80);
     border-radius: 3px;
@@ -70,7 +71,7 @@
     align-items: center;
 }
 
-.Login .logos-box{
+.Login .logos-box {
     height: 6%;
     width: 100%;
     display: flex;
@@ -80,7 +81,8 @@
     top: 0;
     margin-right: 0.3%;
 }
-.Login .logos-box .logo{
+
+.Login .logos-box .logo {
     width: 5%;
     margin-left: 0.5%;
     display: flex;
@@ -88,12 +90,82 @@
     align-self: center;
     object-fit: fill;
 }
+
 .Login .Logo {
     width: 10vw;
 }
 
 .Login .Error {
     margin-top: 2vw;
-    color:red;
+    color: red;
 }
 
+.Registration {
+    color: white;
+    direction: rtl;
+}
+
+.Registration .body {
+    color: black;
+    padding: 2vw;
+    margin-top: 0.3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Registration .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5vw;
+}
+
+.Registration .form input {
+    margin-bottom: 0.9vw;
+    font-size: 1vw;
+    background: transparent;
+    border: none;
+    border-bottom: 1px grey solid;
+    color: grey;
+    outline: none;
+    width: 70%;
+    text-align: center;
+    direction: ltr;
+}
+
+.Registration label{
+    font-size: 1.2vw;
+    color: rgb(95, 95, 95);
+}
+
+.Registration .form label {
+    font-size: 1vw;
+    margin-top: 1vw;
+    color: grey;
+}
+
+.Registration .header {
+    background-color: rgba(2, 14, 24, 0.651);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Registration .footer {
+    background-color: rgba(2, 14, 24, 0.651);
+}
+
+.Registration .close-modal-btn:hover {
+    color: black
+}
+
+.Registration .close-modal-btn {
+    color: white;
+    cursor: pointer;
+    float: right;
+    font-size: 30px;
+    margin: 0;
+}
