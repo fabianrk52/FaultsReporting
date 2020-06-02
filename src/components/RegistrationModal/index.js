@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Modal.css';
+import './RegistrationModal.css';
 
 const modal = (props) => {
     return (

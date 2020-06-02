@@ -1,0 +1,25 @@
+.Registration{
+    color: black;
+}
+
+.Registration .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5vw;
+    margin-top: 3vw;
+}
+
+.Registration .form input {
+    margin-bottom: 0.9vw;
+    font-size: 1vw;
+    background: transparent;
+    border: none;
+    border-bottom: 1px grey solid;
+    color: grey;
+    outline: none;
+    width: 70%;
+    text-align: center;
+    direction: ltr;
+}

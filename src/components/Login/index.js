@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logoRapat from '../../Images/mantak.png'
 import './Login.css'
-import Registration from '../Registration';
-import Modal from '../Modal';
+import RegistrationModal from '../RegistrationModal';
 // import axios from 'axios'
 // import {useHistory} from "react-router-dom";
 
@@ -14,7 +13,7 @@ export default function Login() {
         password: 'סיסמה',
         registration: 'הרשמה',
         connect: 'התחבר',
-        save:"שמור"
+        save: "שמור"
     }
     const ENTER_KEY = "Enter";
     const ENTER_KEY_CODE = 13;
@@ -88,15 +87,14 @@ export default function Login() {
                 </div>
                 <button type="submit" className="btn btn-secondary btn-lg mt-4" onClick={onSubmit}>{dictionary.connect}</button>
             </div>
-            <Modal
+            <RegistrationModal
                 className="modal"
                 show={showRegistration}
                 close={closeRegistration}
                 title={dictionary.registration}
-                children={Registration}
                 save={dictionary.save}
-                >
-				</Modal>
+            >
+            </RegistrationModal>
         </div>
     )
 }
