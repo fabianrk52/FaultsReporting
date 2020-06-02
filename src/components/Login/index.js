@@ -15,7 +15,7 @@ export default function Login() {
         registration: 'הרשמה',
         connect: 'התחבר',
         save: "שמור",
-        reporter: "מדווח",
+        reporterTask: "תפקיד",
         unit: "יחידה",
         phone: "נייד",
         registration_text: "נא למלא כל הפרטים"
@@ -28,7 +28,7 @@ export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false)
     const [userName, setUserName] = useState('')
     const [phone, setPhone] = useState('')
-    const [reporter, setReporter] = useState('')
+    const [reporterTask, setReporterTask] = useState('')
     const [unitName, setUnitName] = useState('')
 
 
@@ -120,7 +120,6 @@ export default function Login() {
                 <Modal
                     show={showRegistration} onHide={closeRegistration}
                     className="Registration"
-                    size="lg"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
                 >
@@ -132,15 +131,15 @@ export default function Login() {
                         <label>{dictionary.registration_text + ':'}</label>
                         <div className="form">
                             <label>{dictionary.user + ':'}</label>
-                            <input name='username' onChange={e => setUserName(e.target.value)} />
+                            <input name='username' onChange={e => setUserName(e.target.value)} required />
                             <label>{dictionary.password + ':'}</label>
-                            <input name='password' type='password' onChange={e => setPassword(e.target.value)} />
+                            <input name='password' type='password' onChange={e => setPassword(e.target.value)} required />
                             <label>{dictionary.phone + ':'}</label>
-                            <input name='phone' type="number" onChange={e => setPhone(e.target.value)} />
+                            <input name='phone' type="number" onChange={e => setPhone(e.target.value)} required />
                             <label>{dictionary.unit + ':'}</label>
-                            <input name='unitname' onChange={e => setUnitName(e.target.value)} />
-                            <label>{dictionary.reporter + ':'}</label>
-                            <input name='reporter' onChange={e => setReporter(e.target.value)} />
+                            <input name='unitname' onChange={e => setUnitName(e.target.value)} required />
+                            <label>{dictionary.reporterTask + ':'}</label>
+                            <input name='reporterTask' onChange={e => setReporterTask(e.target.value)} required />
                         </div>
                     </Modal.Body>
                     <Modal.Footer className="footer">
